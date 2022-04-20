@@ -8,7 +8,12 @@ export const PostForm = () => {
     const [categories, setCategories] = useState([])
     const [tags, setTags] = useState([])
     const [post, setPost] = useState({})
-    const [selectedTags, addSelectedTags] = useState([])
+    // const [selectedTags, addSelectedTags] = useState([])
+
+    const title = useRef(null)
+    const imageURL = useRef(null)
+    const content = useRef(null)
+    const approved = useRef(null)
 
     useEffect((cat) => {
         setCategories(cat)
@@ -22,13 +27,17 @@ export const PostForm = () => {
     const constructNewPost = () => {
         const currentUserId = localStorage.getItem("token")
 
-        post.userId = parseInt(currentUserId),
-        post.categoryId = parseInt(categoryId),
-        post.title = title,
-        post.publicationDate = Date(Date.now()).toLocaleString('en-us').split('GMT')[0],
-        post.imageUrl = imageUrl,
-        post.content = content,
-        post.approved = approved
+        post.userId = parseInt(currentUserId)
+        post.categoryId = 1
+        post.title = title.current.value
+        post.publicationDate = Date(Date.now()).toLocaleString('en-us').split('GMT')[0]
+        post.imageURL = imageURL.current.value
+        post.content = content.current.value
+        if (approved.current.checked) {
+            post.approved = 1
+        } else {
+            post.approved = 0
+        }
         setPost(post)
     }
 
@@ -43,7 +52,7 @@ export const PostForm = () => {
 
             <fieldset>
                 <div className="form-group">
-                    <input type="text" id="imageUrl" ref={imageUrl} required autoFocus className="form-control" placeholder="Image URL" />
+                    <input type="text" id="imageUrl" ref={imageURL} required autoFocus className="form-control" placeholder="Image URL" />
                 </div>
             </fieldset>
             
@@ -53,20 +62,20 @@ export const PostForm = () => {
                 </div>
             </fieldset>
 
-            <fieldset>
+            {/* <fieldset>
                 <div className="form-group">
                     <select defaultValue="" name="category" ref={category} id="category" className="form-control" >
                         <option value="0">Category select</option>
-                        {categories.map(c => (
+                        {categories?.map(c => (
                             <option key={c.id} value={c.id}>
                                 {c.label}
                             </option>
                         ))}
                     </select>
                 </div>
-            </fieldset>
+            </fieldset> */}
             
-            <fieldset>
+            {/* <fieldset>
                 <div className="form-group">
                 {tags?.map(t => (
                     <input key={t.id} type="checkbox" value={t.id}
@@ -85,6 +94,12 @@ export const PostForm = () => {
                         }
                     >{t.label}</input>
                 ))}
+                </div>
+            </fieldset> */}
+
+            <fieldset>
+                <div className="form-group">
+                    <input type="checkbox" id="approved" ref={approved} required autoFocus className="form-control" />
                 </div>
             </fieldset>
 
