@@ -9,7 +9,6 @@ export const ApplicationViews = () => {
     <Route exact path="/posts">
       <PostsList />
     </Route>
-    <h1 >Welcome to Rare Publishing</h1>
     </>
   )
 }
