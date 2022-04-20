@@ -22,21 +22,10 @@ export const PostsList = () => {
                                         {post.title}
                                     </div>
                                     <div className="post--user">
-                                        {post.userId}
+                                        {post.user.fullName}
                                     </div>
                                     <div className="post--category">
-                                        {post.categoryId}
-                                    </div>
-                                    <img className="post--image" src={post.imageURL} alt={post.title}
-                                    />
-                                    <div className="post--content">
-                                        {post.content}
-                                    </div>
-                                    <div className="post--date">
-                                        {post.publicationDate}
-                                    </div>
-                                    <div className="post--approved">
-                                        {post.approved}
+                                        {post.category.label}
                                     </div>
                                 </div>
                             </li>
