@@ -1,5 +1,8 @@
 import Settings from "../repositories/Settings"
 
+
+
+
 export const getPosts = () => {
     return fetch(`${Settings.remoteURL}/posts`)
     .then(res => res.json())
@@ -8,6 +11,15 @@ export const getPosts = () => {
 export const getSinglePost = (postId) => {
     return fetch(`${Settings.remoteURL}/posts/${postId}`)
     .then(res => res.json())
+}
+
+export const deletePost = (postId, setRefresh) => {
+    
+    return fetch(`${Settings.remoteURL}/posts/${postId}`, {
+        method: "DELETE"
+    })
+    .then(() => setRefresh(true))
+        
 }
 
 export const getUserPost = (userId) => {

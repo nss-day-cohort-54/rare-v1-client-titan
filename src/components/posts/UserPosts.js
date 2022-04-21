@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getUserPost } from "./PostManager";
+import { getUserPost, deletePost } from "./PostManager";
 
 
 export const UserPostsList = () => {
     const [posts, setPosts] = useState([])
-    const [currentUser, setUser] = useState(0)
+    const [currentUser, setUser] = useState()
+    const [refresh, setRefresh] = useState(false)
+        
 
     useEffect(() => {
         setUser(localStorage.getItem("token"))
-    }, [])
+        
+        
+    }, [refresh])
 
     useEffect(() => {
         getUserPost(currentUser)
             .then((data) => setPosts(data))
-    }, [currentUser])
+            .then(() => setRefresh(false))
+    }, [currentUser, refresh])
 
     return (
         <>
@@ -33,7 +38,8 @@ export const UserPostsList = () => {
                                         {post.category.label}
                                     </div>
                                     <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button onClick={() => {deletePost(post.id, setRefresh)
+                                    }}>Delete</button>
                                 </div>
                             </li>
                         </>
