@@ -5,8 +5,12 @@ export const getPosts = () => {
     .then(res => res.json())
 }
 
+export const getSinglePost = (ingredientId) => {
+    return fetch(`${Settings.remoteURL}/posts/${ingredientId}`)
+    .then(res => res.json())
+}
 export const addPost = (post) => {
-    return fetch("http://localhost:8088/posts", {
+    return fetch(`${Settings.remoteURL}/posts`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
