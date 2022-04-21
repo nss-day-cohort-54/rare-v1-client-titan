@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserPost, deletePost } from "./PostManager";
-import { useHistory } from "react-router-dom";
+
 
 export const UserPostsList = () => {
     const [posts, setPosts] = useState([])
