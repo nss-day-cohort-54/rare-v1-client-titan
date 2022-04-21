@@ -16,11 +16,11 @@ export const PostsList = () => {
 
     return (
         <>
+            <button className="btn new-post" onClick={() => history.push("/posts/create")}>New Post</button>
             <ul className="postsList">
                 {posts.map(
                     (post) => {
                         return <>
-                            <button className="btn new-post" onClick={() => history.push("/posts/create")}>New Post</button>
                             <li className="card post--list" key={`post--${post.id}`}>
                                 <div key={`post--${post.id}`}>
                                     <div className="post--title"><Link to={`/posts/${post.id}`}>
