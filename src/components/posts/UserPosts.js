@@ -5,15 +5,21 @@ import { getUserPost } from "./PostManager";
 
 export const UserPostsList = () => {
     const [posts, setPosts] = useState([])
+    const [currentUser, setUser] = useState(0)
 
     useEffect(() => {
-        getUserPost(1)
-            .then((data) => setPosts(data))
+        setUser(localStorage.getItem("token"))
     }, [])
+
+    useEffect(() => {
+        getUserPost(currentUser)
+            .then((data) => setPosts(data))
+    }, [currentUser])
 
     return (
         <>
             <ul className="postsList">
+                <h2>My Posts</h2>
                 {posts.map(
                     (post) => {
                         return <>
@@ -23,12 +29,11 @@ export const UserPostsList = () => {
                                         {post.title}
                                     </Link>
                                     </div>
-                                    <div className="post--user">
-                                        {post.user.fullName}
-                                    </div>
                                     <div className="post--category">
                                         {post.category.label}
                                     </div>
+                                    <button>Edit</button>
+                                    <button>Delete</button>
                                 </div>
                             </li>
                         </>
