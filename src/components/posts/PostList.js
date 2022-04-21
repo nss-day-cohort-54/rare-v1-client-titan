@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getPosts } from "./PostManager";
+import { useHistory } from "react-router-dom";
 
 
 export const PostsList = () => {
@@ -10,33 +12,26 @@ export const PostsList = () => {
             .then((data) => setPosts(data))
     }, [])
 
+    const history = useHistory()
+
     return (
         <>
+            <button className="btn new-post" onClick={() => history.push("/posts/create")}>New Post</button>
             <ul className="postsList">
                 {posts.map(
                     (post) => {
                         return <>
                             <li className="card post--list" key={`post--${post.id}`}>
                                 <div key={`post--${post.id}`}>
-                                    <div className="post--title">
+                                    <div className="post--title"><Link to={`/posts/${post.id}`}>
                                         {post.title}
+                                    </Link>
                                     </div>
                                     <div className="post--user">
-                                        {post.userId}
+                                        {post.user.fullName}
                                     </div>
                                     <div className="post--category">
-                                        {post.categoryId}
-                                    </div>
-                                    <img className="post--image" src={post.imageURL} alt={post.title}
-                                    />
-                                    <div className="post--content">
-                                        {post.content}
-                                    </div>
-                                    <div className="post--date">
-                                        {post.publicationDate}
-                                    </div>
-                                    <div className="post--approved">
-                                        {post.approved}
+                                        {post.category.label}
                                     </div>
                                 </div>
                             </li>
