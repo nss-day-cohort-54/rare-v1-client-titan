@@ -3,11 +3,8 @@ import { Route } from "react-router-dom"
 import { Post } from "./posts/Post"
 import { PostsList } from "./posts/PostList"
 import { PostForm } from "./posts/PostForm"
-<<<<<<< HEAD
 import { UserPostsList } from "./posts/UserPosts"
-=======
 import { TagList } from "./tags/TagList"
->>>>>>> main
 
 
 export const ApplicationViews = () => {
