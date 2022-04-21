@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getPosts } from "./PostManager";
+import { useHistory } from "react-router-dom";
 
 
 export const PostsList = () => {
@@ -9,6 +10,8 @@ export const PostsList = () => {
         getPosts()
             .then((data) => setPosts(data))
     }, [])
+
+    const history = useHistory()
 
     return (
         <>
