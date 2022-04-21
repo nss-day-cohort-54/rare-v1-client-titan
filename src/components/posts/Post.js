@@ -4,7 +4,17 @@ import { getSinglePost } from "./PostManager";
 
 
 export const Post = () => {
-    const [post, setPost] = useState({})
+    const [post, setPost] = useState({
+        title:"",
+        publicationDate:"",
+        imageURL:"",
+        user:{
+            fullName:""
+        },
+        category:{
+            label:""
+        }
+    })
 
 
     const { postId } = useParams()
@@ -23,25 +33,22 @@ export const Post = () => {
 
                 <li className="card post--list" key={`post--${post.id}`}>
                     <div key={`post--${post.id}`}>
-                        <div className="post--title">
+                        <h2 className="post--title">
                             {post.title}
-                        </div>
+                        </h2>
                         <div className="post--user">
-                            {post.userId}
+                            by {post.user?.fullName}
                         </div>
                         <div className="post--category">
-                            {post.categoryId}
+                            Category: {post.category.label}
+                        </div>
+                        <div className="post--date">
+                            {post.publicationDate}
                         </div>
                         <img className="post--image" src={post.imageURL} alt={post.title}
                         />
                         <div className="post--content">
                             {post.content}
-                        </div>
-                        <div className="post--date">
-                            {post.publicationDate}
-                        </div>
-                        <div className="post--approved">
-                            {post.approved}
                         </div>
                     </div>
                 </li>
