@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getPosts } from "./PostManager";
 
 
@@ -18,8 +19,9 @@ export const PostsList = () => {
                         return <>
                             <li className="card post--list" key={`post--${post.id}`}>
                                 <div key={`post--${post.id}`}>
-                                    <div className="post--title">
+                                    <div className="post--title"><Link to={`/posts/${post.id}`}>
                                         {post.title}
+                                    </Link>
                                     </div>
                                     <div className="post--user">
                                         {post.user.fullName}
