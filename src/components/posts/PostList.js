@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPosts } from "./PostManager";
+import { useHistory } from "react-router-dom";
 
 
 export const PostsList = () => {
@@ -11,8 +12,11 @@ export const PostsList = () => {
             .then((data) => setPosts(data))
     }, [])
 
+    const history = useHistory()
+
     return (
         <>
+            <button className="btn new-post" onClick={() => history.push("/posts/create")}>New Post</button>
             <ul className="postsList">
                 {posts.map(
                     (post) => {
