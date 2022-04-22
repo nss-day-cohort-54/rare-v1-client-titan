@@ -47,3 +47,8 @@ export const editPost = (newPost, postId) => {
     })
 }
 
+export const searchPostTitles = (searchTerm) => {
+    return fetch(`${Settings.remoteURL}/posts?title=${searchTerm}`)
+    .then(res => res.json())
+}
+
