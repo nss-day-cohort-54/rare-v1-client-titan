@@ -32,5 +32,3 @@ export const editCategory = (id) => {
     fetch(`http://localhost:8088/categories/${id}`)
             .then(res => res.json())
 }
-
-

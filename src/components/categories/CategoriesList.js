@@ -6,20 +6,20 @@
 */
 
 import React, { useEffect, useState } from "react";
+import { getCategories, addCategory } from "./CategoriesManager";
+import { editCategory, deleteCategory } from "./CategoriesManager";  
 import { useHistory } from "react-router-dom";
-import { getCategories, deleteCategory } from "./CategoriesManager";
-import { editCategory, addCategory } from "./CategoriesManager";
 
-export const CategoriesList = () => {
-    const [ categories, setCategories ] = useState([])
-    const [ category, setCategory ] = useState({})
+
+export const CategoriesList = () => {                    
+    const [categories, setCategories] = useState([])          
+    const [category, setCategory] = useState({})            
     const history = useHistory()
 
     useEffect(() => {
-        getCategories()
-            .then((data) => setCategories(data))
+        getCategories()                                    
+            .then((category) => setCategories(category))               
     }, [])
-
 
     const saveCategory = () => {
         const newCategory = {
@@ -35,63 +35,59 @@ export const CategoriesList = () => {
     }
 
     return (
-        <div className="categorieslist">
-            <div className="allcategories">
-            {
-            categories.map(
-                (category) => {
-                    return (
-                    <>
-                        <div className="category" key={`category--${category.id}`}>
-                            <article className="categorylist">                           
-                                Category: {category.label}  
-
-                                <button className="button" onClick={() => {
-                                history.push(`editCategory/${category.id}`)
-                                 }}>Edit Category</button> 
-
-                                <button className="button" onClick={() => {
-                                    deleteCategory(category.id)                            
-                                }}>Delete Category</button>                         
-                            </article>
-                        </div>
-                    </>
-                    )
-                }
-            )}
+        <div className="columns">
+            <div className="column">
+                <ul className="categoriesList">
+                    {categories.map(category => {
+                        return <>
+                            <li className="card category--list" key={`category--${category.id}`}>
+                                <div className="category--label">
+                                    {category.label}
+                                </div>
+                                <button className="btn edit-tag">Edit</button>
+                                <button className="btn delete-tag">Delete</button>
+                            </li>
+                        </>
+                        }
+                    )}
+                </ul>
             </div>
-                    <div className="addcategory">
-                        <form className="newCategoryForm">
-                        <h2 className="newCategoryForm__title">Create a New Category</h2>
+            
+            <div className="column">
+                <form className="categoryForm">
+                    <h2 className="categoryForm__title">Create a New Category</h2>
+                    <fieldset>
+                        <div className="form-group">
+                            <input autoFocus type="text" value={category.label} className="categoryLabel" placeholder="Enter the new category..."
+                            onChange={
+                                (evt) => {
+                                    evt.preventDefault()
+                                    const copy = {...category}
+                                    copy.label = evt.target.value
+                                    setCategory(copy)
+                                }
+                            } />
+                        </div>
+                    </fieldset>
 
-                        <fieldset>
-                            <div className="form-group">
-                                <label htmlFor="label">New category:</label>
-                                <input
-                                    onChange={
-                                        (evt) => {
-                                            const copy = {...category}
-                                            copy.label = evt.target.value
-                                            setCategory(copy)
-                                        }
-                                    }
-                                    required autoFocus
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter the new category..."
-                                    />
-                            </div>
-                        </fieldset>  
-                                <br></br>
-                                <button type="submit" className="btn btn-primary"
-                                    onClick={(evt) => {
-                                        evt.preventDefault()
-                                        saveCategory()
-                                    }}
-                                >Submit
-                                </button>
-                        </form>
-                    </div>
+                    <button type="submit"
+                        className="btn btn-primary"
+                        onClick={(evt) => {
+                            evt.preventDefault()
+                            saveCategory()
+                        }}
+                    >Submit</button>
+                </form>
+            </div>
         </div>
     )
 }
+
+
+//                                 <button className="button" onClick={() => {
+//                                 history.push(`editCategory/${category.id}`)
+//                                  }}>Edit Category</button> 
+
+//                                 <button className="button" onClick={() => {
+//                                     deleteCategory(category.id)                            
+//                                 }}>Delete Category</button>                         
