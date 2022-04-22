@@ -23,6 +23,10 @@ export const getUserPost = (userId) => {
     return fetch(`${Settings.remoteURL}/posts?user=${userId}`)
     .then(res => res.json())
 }
+export const getCategoryFilterPost = (categoryId) => {
+    return fetch(`${Settings.remoteURL}/posts?category=${categoryId}`)
+    .then(res => res.json())
+}
 
 export const addPost = (post) => {
     return fetch(`${Settings.remoteURL}/posts`, {
