@@ -33,7 +33,7 @@ export const PostsList = () => {
             getPosts()
                 .then((data) => setPosts(data))
         }
-    }, [selectedCategoryId, posts])
+    }, [selectedCategoryId])
 
     useEffect(() => {
         if (Object.keys(filteredUser).length !== 0) {
