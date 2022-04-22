@@ -49,7 +49,15 @@ export const PostsList = () => {
 
     return (
         <>
-            <div className="category--filter">
+            {searchTitle != "" ? <div className="category--filter">
+                <h3>Filter by Category:</h3>
+                <select className="select--category" defaultValue={0} disabled onChange={e => { setSelectedCategoryId(e.target.value) }}>
+                    <option key={`category--0`} value={"0"}>All Categories</option>
+                    {categories.map(category => {
+                        return <option key={`category--${category.Id}`} value={category.id}>{category.label}</option>
+                    })}
+                </select>
+            </div> : <div className="category--filter">
                 <h3>Filter by Category:</h3>
                 <select className="select--category" defaultValue={0} onChange={e => { setSelectedCategoryId(e.target.value) }}>
                     <option key={`category--0`} value={"0"}>All Categories</option>
@@ -57,15 +65,24 @@ export const PostsList = () => {
                         return <option key={`category--${category.Id}`} value={category.id}>{category.label}</option>
                     })}
                 </select>
-            </div>
+            </div>}
+                {selectedCategoryId != "0" ? <div className="title--filter">
+                <h3>Search by Title:</h3>
+                <textarea className="search--title" disabled onKeyUp={e => {
+                    const searchTerm = e.target.value
+                    setSearchTitle(searchTerm)
+                    
+                }} />
+                </div> : 
             <div className="title--filter">
                 <h3>Search by Title:</h3>
                 <textarea className="search--title" onKeyUp={e => {
                     const searchTerm = e.target.value
                     setSearchTitle(searchTerm)
-
+                    
                 }} />
             </div>
+            }
 
             <div className="search">
                 <label>Search By Author</label>
