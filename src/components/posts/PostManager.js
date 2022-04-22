@@ -36,4 +36,13 @@ export const addPost = (post) => {
         body: JSON.stringify(post)
     })
 }
+export const editPost = (newPost, postId) => {
+    return fetch(`${Settings.remoteURL}/posts/${postId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newPost)
+    })
+}
 
