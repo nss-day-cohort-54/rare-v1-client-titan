@@ -6,6 +6,7 @@ import { PostForm } from "./posts/PostForm"
 import { UserPostsList } from "./posts/UserPosts"
 import { TagList } from "./tags/TagList"
 import { CategoriesList } from "./categories/CategoriesList"
+import { UserList } from "./users/UserList"
 
 
 export const ApplicationViews = () => {
@@ -28,6 +29,9 @@ export const ApplicationViews = () => {
     </Route>
     <Route exact path="/tags">
       <TagList />
+    </Route>
+    <Route exact path="/users">
+      <UserList />
     </Route>
     </>
   )
