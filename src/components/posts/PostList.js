@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCategoryFilterPost, getPosts, getUserPost } from "./PostManager";
+import { getCategoryFilterPost, getPosts, getUserPost, searchPostTitles } from "./PostManager";
 import { getUsers } from "../users/UserManager";
 import { useHistory } from "react-router-dom";
 import { getCategories } from "../categories/CategoriesManager";
@@ -13,6 +13,7 @@ export const PostsList = () => {
     const history = useHistory()
     const [users, setUsers] = useState([])
     const [filteredUser, setFilteredUser] = useState({})
+    const [searchTitle, setSearchTitle] = useState('')
 
     useEffect(() => {
         getPosts()
@@ -29,11 +30,14 @@ export const PostsList = () => {
     useEffect(() => {
         if (selectedCategoryId !== "0") {
             getCategoryFilterPost(selectedCategoryId).then(data => setPosts(data))
+        } else if (searchTitle !== "") {
+            searchPostTitles(searchTitle).then(data => setPosts(data) )
+            
         } else {
             getPosts()
                 .then((data) => setPosts(data))
         }
-    }, [selectedCategoryId])
+    }, [selectedCategoryId, searchTitle])
 
     useEffect(() => {
         if (Object.keys(filteredUser).length !== 0) {
@@ -53,6 +57,14 @@ export const PostsList = () => {
                         return <option key={`category--${category.Id}`} value={category.id}>{category.label}</option>
                     })}
                 </select>
+            </div>
+            <div className="title--filter">
+                <h3>Search by Title:</h3>
+                <textarea className="search--title" onKeyUp={e => {
+                    const searchTerm = e.target.value
+                    setSearchTitle(searchTerm)
+
+                }} />
             </div>
 
             <div className="search">
