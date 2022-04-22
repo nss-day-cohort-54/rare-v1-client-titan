@@ -30,7 +30,6 @@ export const Post = () => {
     return (
         <>
             <ul className="post">
-
                 <li className="card post--list" key={`post--${post.id}`}>
                     <div key={`post--${post.id}`}>
                         <h2 className="post--title">
@@ -52,9 +51,6 @@ export const Post = () => {
                         </div>
                     </div>
                 </li>
-
-
-
             </ul>
         </>
     )
