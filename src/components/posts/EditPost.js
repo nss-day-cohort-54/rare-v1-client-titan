@@ -21,7 +21,15 @@ export const EditPosts = () => {
     }
 
     useEffect(() => {
-        setNewPost(post)
+        const copy = {}
+        copy.userId = post.userId
+        copy.categoryId = post.categoryId
+        copy.title = post.title
+        copy.publicationDate = post.publicationDate
+        copy.imageURL = post.imageURL
+        copy.content = post.content
+        copy.approved = post.approved
+        setNewPost(copy)
     },[post])
 
     useEffect(() => {
@@ -51,6 +59,7 @@ export const EditPosts = () => {
                     <select className="post--category" defaultValue={post.categoryId} onChange={e => {
                         const copy = { ...newPost }
                         copy.categoryId = parseInt(e.target.value)
+                        
                         setNewPost(copy)
                     }}>
                         {categories.map(category => {

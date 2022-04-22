@@ -1,8 +1,5 @@
 import Settings from "../repositories/Settings"
 
-
-
-
 export const getPosts = () => {
     return fetch(`${Settings.remoteURL}/posts`)
     .then(res => res.json())
@@ -24,6 +21,10 @@ export const deletePost = (postId, setRefresh) => {
 
 export const getUserPost = (userId) => {
     return fetch(`${Settings.remoteURL}/posts?user=${userId}`)
+    .then(res => res.json())
+}
+export const getCategoryFilterPost = (categoryId) => {
+    return fetch(`${Settings.remoteURL}/posts?category=${categoryId}`)
     .then(res => res.json())
 }
 
