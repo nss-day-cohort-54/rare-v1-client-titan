@@ -9,7 +9,6 @@ export const PostsList = () => {
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState([])
     const [filteredUser, setFilteredUser] = useState({})
-    // const [filteredPosts, setFilteredPosts] = useState([])
 
     useEffect(() => {
         getPosts()
@@ -19,8 +18,11 @@ export const PostsList = () => {
     }, [])
 
     useEffect(() => {
-        if (Object.keys(filteredUser).length !== 0 ) {
+        if (filteredUser.hasOwnProperty("id")) {
             getUserPost(filteredUser.id)
+                .then(post => setPosts(post))
+        } else {
+            getPosts()
                 .then(post => setPosts(post))
         }
     }, [filteredUser])
@@ -36,11 +38,15 @@ export const PostsList = () => {
                 <select className="searchBuAuthor" id="searchBuAuthor" onChange={
                     (evt) => {
                         evt.preventDefault()
-                        const selectedUser = users.find(user => user.id === parseInt(evt.target.value))
-                        setFilteredUser(selectedUser)
+                        if (parseInt(evt.target.value) !== 0) {
+                            const selectedUser = users.find(user => user.id === parseInt(evt.target.value))
+                            setFilteredUser(selectedUser)
+                        } else {
+                            setFilteredUser({})
+                        }
                     }
                 }>
-                    <option value="">Select author</option>
+                    <option value="0">All</option>
                     {
                         users.map(user => {
                             return <option key={`users--${user.id}`} value={user.id}>{user.fullName}</option>
@@ -61,7 +67,9 @@ export const PostsList = () => {
                                         </Link>
                                         </div>
                                         <div className="post--user">
-                                            {post.user.fullName}
+                                            <Link to={`/users/${post.userId}`}>
+                                                {post.user.fullName}
+                                            </Link>
                                         </div>
                                         <div className="post--category">
                                             {post.category.label}

@@ -8,6 +8,7 @@ import { TagList } from "./tags/TagList"
 import { CategoriesList } from "./categories/CategoriesList"
 import { UserList } from "./users/UserList"
 import { EditPosts } from "./posts/EditPost"
+import { User } from "./users/User"
 
 
 export const ApplicationViews = () => {
@@ -33,6 +34,9 @@ export const ApplicationViews = () => {
     </Route>
     <Route exact path="/users">
       <UserList />
+    </Route>
+    <Route exact path="/users/:userId(\d+)">
+      <User />
     </Route>
     <Route exact path="/posts/:postId(\d+)/edit">
       <EditPosts />
