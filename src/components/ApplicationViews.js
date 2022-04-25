@@ -9,6 +9,7 @@ import { CategoriesList } from "./categories/CategoriesList"
 import { UserList } from "./users/UserList"
 import { EditPosts } from "./posts/EditPost"
 import { User } from "./users/User"
+import { PostComments } from "./comments/PostComments"
 
 
 export const ApplicationViews = () => {
@@ -40,6 +41,9 @@ export const ApplicationViews = () => {
     </Route>
     <Route exact path="/posts/:postId(\d+)/edit">
       <EditPosts />
+    </Route>
+    <Route exact path="/posts/:postId(\d+)/comments">
+      <PostComments />
     </Route>
     </>
   )
