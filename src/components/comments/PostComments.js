@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { getComments } from "./CommentManager";
+import { deleteComment, getComments } from "./CommentManager";
 
 export const PostComments = ({refreshComments, setRefreshComments}) => {
 
@@ -31,6 +31,8 @@ export const PostComments = ({refreshComments, setRefreshComments}) => {
                                     <div className="comment--content">
                                         {comment.content}
                                     </div>
+                                    {comment.authorId === parseInt(localStorage.getItem("token")) ? <button onClick={() => {deleteComment(comment.id, setRefreshComments)
+                                    .then(() => setRefreshComments(false))}}>🗑️</button>: ""}
 
                                 </li>
                             </>

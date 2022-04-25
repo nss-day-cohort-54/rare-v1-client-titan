@@ -14,3 +14,10 @@ export const createComment = (newComment) => {
         body: JSON.stringify(newComment)
     })
 }
+
+export const deleteComment = (id, setRefreshComments) => {
+    return fetch(`${Settings.remoteURL}/comments/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => setRefreshComments(true))
+}
