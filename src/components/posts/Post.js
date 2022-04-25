@@ -51,6 +51,8 @@ export const Post = () => {
                             {post.content}
                         </div>
                         <Link to={`/posts/${post.id}/comments`}>View Comments</Link>
+                        <br></br>
+                        <Link to={`/posts/${post.id}/add-comment`}>Add a comment</Link>
                     </div>
                 </li>
             </ul>
