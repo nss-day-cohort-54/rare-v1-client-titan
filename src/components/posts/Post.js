@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "./PostManager";
+import { Link } from "react-router-dom";
 
 
 export const Post = () => {
@@ -49,6 +50,7 @@ export const Post = () => {
                         <div className="post--content">
                             {post.content}
                         </div>
+                        <Link to={`/posts/${post.id}/comments`}>View Comments</Link>
                     </div>
                 </li>
             </ul>
