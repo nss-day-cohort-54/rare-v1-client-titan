@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUsers, getSingleUser, addSubcribedUser } from "./UserManager";
+import { getUsers, getSingleUser, addSubcribedUser, getSubscriptions, deleteSubscription } from "./UserManager";
 import { useHistory } from "react-router-dom";
 
 
 export const User = () => {
     const [user, setUser] = useState({})
-    const { userId } = useParams()
     const [users, setUsers] = useState([])
+    const [subscriptions, setSubscription] = useState([])
+    const [checkSubscribe, setCheckSubscribe] = useState(false)
+    const { userId } = useParams()
     const history = useHistory()
 
     useEffect(() => {
@@ -20,16 +22,23 @@ export const User = () => {
     useEffect(() => {
         getUsers()
             .then((data) => setUsers(data))
+        getSubscriptions()
+            .then(data => setSubscription(data))
     }, [])
+
+    const findSubscription = subscriptions.find(s => s.authorId === currentUserId)
+    if (findSubscription) {
+        setCheckSubscribe(true)
+    }
 
     const currentUserId = localStorage.getItem("token")
 
     const constructSubcription = () => {
         const subcription = {}
-        subcription.followerId = parseInt(userId)
-        subcription.authorId = parseInt(currentUserId)
+        subcription.followerId = parseInt(currentUserId)
+        subcription.authorId = parseInt(userId)
         subcription.createdOn = Date(Date.now()).toLocaleString('en-us').split('GMT')[0]
-        debugger
+        setCheckSubscribe(true)
         addSubcribedUser(subcription)
             .then(() => history.push("/"))
     }
@@ -42,8 +51,19 @@ export const User = () => {
                         (evt) => {
                             evt.preventDefault()
                             constructSubcription()
-                    }}>Subcribe</button>
+                    }}>Subscribe</button>
             }
+            {
+                checkSubscribe ?
+                    <button className="btn user-unsubscribe" onClick={
+                        (evt) => {
+                            evt.preventDefault()
+                            deleteSubscription(findSubscription.id)
+                        }
+                    }>Unsubscribed</button>
+                        : null
+            }
+
             <ul className="user">
                 <li className="card user--list">
                     <h2>{user.fullName}</h2>
