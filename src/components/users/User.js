@@ -12,7 +12,6 @@ export const User = () => {
     const [subscriptions, setSubscriptions] = useState([])
     const [user, setUser] = useState({})
     const [checkSubscribe, setCheckSubscribe] = useState(false)
-    const history = useHistory()
 
     useEffect(() => {
         if (userId) {
@@ -48,7 +47,6 @@ export const User = () => {
             .then(() => {
                 setCheckSubscribe(true)
             })
-            // .then(() => history.push("/"))
     }
 
     return (
