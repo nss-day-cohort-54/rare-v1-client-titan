@@ -5,63 +5,71 @@ import { useHistory } from "react-router-dom";
 
 
 export const User = () => {
-    const [user, setUser] = useState({})
-    const [users, setUsers] = useState([])
-    const [subscriptions, setSubscription] = useState([])
-    const [checkSubscribe, setCheckSubscribe] = useState(false)
+    const currentUserId = localStorage.getItem("token")
     const { userId } = useParams()
+
+    const [users, setUsers] = useState([])
+    const [subscriptions, setSubscriptions] = useState([])
+    const [user, setUser] = useState({})
+    const [checkSubscribe, setCheckSubscribe] = useState(false)
     const history = useHistory()
 
     useEffect(() => {
         if (userId) {
             getSingleUser(userId)
                 .then((data) => setUser(data))
+                .then(() => {
+                    const findSubscription = subscriptions?.find(s => s.followerId === currentUserId)
+                    if (findSubscription) {
+                        setCheckSubscribe(true)
+                    }
+                })
         }
     }, [userId])
+
+    useEffect(() => {
+        getSubscriptions()
+            .then(data => setSubscriptions(data))
+    }, [checkSubscribe])
 
     useEffect(() => {
         getUsers()
             .then((data) => setUsers(data))
         getSubscriptions()
-            .then(data => setSubscription(data))
+            .then(data => setSubscriptions(data))
     }, [])
-
-    const findSubscription = subscriptions.find(s => s.authorId === currentUserId)
-    if (findSubscription) {
-        setCheckSubscribe(true)
-    }
-
-    const currentUserId = localStorage.getItem("token")
 
     const constructSubcription = () => {
         const subcription = {}
         subcription.followerId = parseInt(currentUserId)
         subcription.authorId = parseInt(userId)
         subcription.createdOn = Date(Date.now()).toLocaleString('en-us').split('GMT')[0]
-        setCheckSubscribe(true)
         addSubcribedUser(subcription)
-            .then(() => history.push("/"))
+            .then(() => {
+                setCheckSubscribe(true)
+            })
+            // .then(() => history.push("/"))
     }
 
     return (
         <>
             {
                 currentUserId === userId ? null : 
+                checkSubscribe ?
+                    <button className="btn user-unsubscribe" onClick={
+                        (evt) => {
+                            evt.preventDefault()
+                            const foundSubscription = subscriptions?.find(s => s.followerId === parseInt(currentUserId))
+                            deleteSubscription(foundSubscription.id)
+                                .then(() => setCheckSubscribe(false))
+                        }
+                    }>Unsubscribed</button>
+                :
                     <button className="btn user-subcribe" onClick={
                         (evt) => {
                             evt.preventDefault()
                             constructSubcription()
                     }}>Subscribe</button>
-            }
-            {
-                checkSubscribe ?
-                    <button className="btn user-unsubscribe" onClick={
-                        (evt) => {
-                            evt.preventDefault()
-                            deleteSubscription(findSubscription.id)
-                        }
-                    }>Unsubscribed</button>
-                        : null
             }
 
             <ul className="user">

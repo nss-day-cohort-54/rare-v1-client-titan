@@ -28,5 +28,5 @@ export const getSubscriptions = () => {
 export const deleteSubscription = (subscriptionId) => {
     return fetch(`${Settings.remoteURL}/subscriptions/${subscriptionId}`, {
         method: "DELETE"
-    })        
+    })
 }
