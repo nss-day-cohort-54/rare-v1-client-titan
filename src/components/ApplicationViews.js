@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState}  from "react"
 import { Route } from "react-router-dom"
 import { Post } from "./posts/Post"
 import { PostsList } from "./posts/PostList"
@@ -10,9 +10,12 @@ import { UserList } from "./users/UserList"
 import { EditPosts } from "./posts/EditPost"
 import { User } from "./users/User"
 import { PostComments } from "./comments/PostComments"
+import { AddComment } from "./comments/AddComment"
+
 
 
 export const ApplicationViews = () => {
+  const [refreshComments, setRefreshComments] = useState(false)
   return (
     <>  
     <Route exact path="/posts">
@@ -43,7 +46,10 @@ export const ApplicationViews = () => {
       <EditPosts />
     </Route>
     <Route exact path="/posts/:postId(\d+)/comments">
-      <PostComments />
+      <PostComments refreshComments={refreshComments} setRefreshComments={setRefreshComments} />
+    </Route>
+    <Route exact path="/posts/:postId(\d+)/add-comment">
+      <AddComment setRefreshComments={setRefreshComments} />
     </Route>
     </>
   )

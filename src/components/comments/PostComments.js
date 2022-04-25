@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { PostsList } from "../posts/PostList";
 import { getComments } from "./CommentManager";
 
-export const PostComments = () => {
+export const PostComments = ({refreshComments, setRefreshComments}) => {
 
     const [comments, setComments] = useState([])
     const { postId } = useParams()
+    
 
     useEffect(() => {
         if (postId) {
             getComments(postId)
                 .then((data) => setComments(data))
+                .then(() => setRefreshComments(false))
         }
-    }, [postId])
+    }, [postId, refreshComments])
 
     return (
         <>
@@ -35,8 +37,9 @@ export const PostComments = () => {
                         }
                     )}
                 </ul>
+                
             }
-
+        <Link to={`/posts/${postId}/add-comment`}>Add a comment</Link>
         </>
 
     )
