@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { PostsList } from "../posts/PostList";
-import { getComments } from "./CommentManager";
+import { deleteComment, getComments } from "./CommentManager";
 
-export const PostComments = () => {
+export const PostComments = ({refreshComments, setRefreshComments}) => {
 
     const [comments, setComments] = useState([])
     const { postId } = useParams()
+    
 
     useEffect(() => {
         if (postId) {
             getComments(postId)
                 .then((data) => setComments(data))
+                .then(() => setRefreshComments(false))
         }
-    }, [postId])
+    }, [postId, refreshComments])
 
     return (
         <>
@@ -29,14 +31,17 @@ export const PostComments = () => {
                                     <div className="comment--content">
                                         {comment.content}
                                     </div>
+                                    {comment.authorId === parseInt(localStorage.getItem("token")) ? <button onClick={() => {deleteComment(comment.id, setRefreshComments)
+                                    .then(() => setRefreshComments(false))}}>🗑️</button>: ""}
 
                                 </li>
                             </>
                         }
                     )}
                 </ul>
+                
             }
-
+        <Link to={`/posts/${postId}/add-comment`}>Add a comment</Link>
         </>
 
     )
