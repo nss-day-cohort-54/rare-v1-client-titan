@@ -11,13 +11,17 @@ import { EditPosts } from "./posts/EditPost"
 import { User } from "./users/User"
 import { PostComments } from "./comments/PostComments"
 import { AddComment } from "./comments/AddComment"
+import { SubscriptionsPosts } from "./posts/SubscriptionsPosts"
 
 
 
 export const ApplicationViews = () => {
   const [refreshComments, setRefreshComments] = useState(false)
   return (
-    <>  
+    <>
+    <Route exact path="/">
+      <SubscriptionsPosts />
+    </Route>
     <Route exact path="/posts">
       <PostsList />
     </Route>
