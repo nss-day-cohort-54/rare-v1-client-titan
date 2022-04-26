@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUsers, getSingleUser, addSubcribedUser } from "./UserManager";
-import { useHistory } from "react-router-dom";
+import { getUsers, getSingleUser, addSubcribedUser, getSubscriptions, deleteSubscription } from "./UserManager";
 
 
 export const User = () => {
-    const [user, setUser] = useState({})
+    const currentUserId = parseInt(localStorage.getItem("token"))
     const { userId } = useParams()
+
     const [users, setUsers] = useState([])
-    const history = useHistory()
+    const [subscriptions, setSubscriptions] = useState([])
+    const [user, setUser] = useState({})
+    const [checkSubscribe, setCheckSubscribe] = useState(false)
+
+    useEffect(() => {
+        getUsers()
+            .then((data) => setUsers(data))
+        getSubscriptions()
+            .then(data => setSubscriptions(data))
+    }, [])
 
     useEffect(() => {
         if (userId) {
@@ -18,32 +27,44 @@ export const User = () => {
     }, [userId])
 
     useEffect(() => {
-        getUsers()
-            .then((data) => setUsers(data))
-    }, [])
-
-    const currentUserId = localStorage.getItem("token")
+        const findSubscription = subscriptions?.find(s => s.followerId === currentUserId)
+        if (findSubscription) {
+            setCheckSubscribe(true)
+    }
+    }, [subscriptions])
 
     const constructSubcription = () => {
         const subcription = {}
-        subcription.followerId = parseInt(userId)
-        subcription.authorId = parseInt(currentUserId)
+        subcription.followerId = parseInt(currentUserId)
+        subcription.authorId = parseInt(userId)
         subcription.createdOn = Date(Date.now()).toLocaleString('en-us').split('GMT')[0]
-        debugger
         addSubcribedUser(subcription)
-            .then(() => history.push("/"))
+            .then(() => {
+                setCheckSubscribe(true)
+            })
     }
 
     return (
         <>
             {
-                currentUserId === userId ? null : 
+                currentUserId === parseInt(userId) ? null : 
+                checkSubscribe ?
+                    <button className="btn user-unsubscribe" onClick={
+                        (evt) => {
+                            evt.preventDefault()
+                            const foundSubscription = subscriptions?.find(s => s.followerId === currentUserId)
+                            deleteSubscription(foundSubscription.id)
+                                .then(() => setCheckSubscribe(false))
+                        }
+                    }>Unsubscribed</button>
+                :
                     <button className="btn user-subcribe" onClick={
                         (evt) => {
                             evt.preventDefault()
                             constructSubcription()
-                    }}>Subcribe</button>
+                    }}>Subscribe</button>
             }
+
             <ul className="user">
                 <li className="card user--list">
                     <h2>{user.fullName}</h2>

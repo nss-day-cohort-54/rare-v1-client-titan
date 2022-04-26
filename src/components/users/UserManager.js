@@ -19,3 +19,14 @@ export const addSubcribedUser = (subcription) => {
         body: JSON.stringify(subcription)
     })
 }
+
+export const getSubscriptions = () => {
+    return fetch(`${Settings.remoteURL}/subscriptions`)
+        .then(res => res.json())
+}
+
+export const deleteSubscription = (subscriptionId) => {
+    return fetch(`${Settings.remoteURL}/subscriptions/${subscriptionId}`, {
+        method: "DELETE"
+    })
+}
