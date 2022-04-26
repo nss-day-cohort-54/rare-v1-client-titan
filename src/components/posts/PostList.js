@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCategoryFilterPost, getPosts, getUserPost, searchPostTitles } from "./PostManager";
+import { getCategoryFilterPost, getPostByTag, getPosts, getUserPost, searchPostTitles } from "./PostManager";
 import { getUsers } from "../users/UserManager";
 import { useHistory } from "react-router-dom";
 import { getCategories } from "../categories/CategoriesManager";
+import { getTags } from "../tags/TagManager";
 
 
 export const PostsList = () => {
     const [posts, setPosts] = useState([])
     const [selectedCategoryId, setSelectedCategoryId] = useState("0")
+    const [selectedTagId, setSelectedTagId] = useState("0")
     const [categories, setCategories] = useState([])
+    const [tags, setTags] = useState([])
     const history = useHistory()
     const [users, setUsers] = useState([])
     const [filteredUser, setFilteredUser] = useState({})
@@ -20,24 +23,25 @@ export const PostsList = () => {
             .then(post => setPosts(post))
         getUsers()
             .then(user => setUsers(user))
-    }, [])
-
-    useEffect(() => {
         getCategories()
             .then((data) => setCategories(data))
+        getTags()
+            .then((data) => setTags(data))
     }, [])
+
 
     useEffect(() => {
         if (selectedCategoryId !== "0") {
             getCategoryFilterPost(selectedCategoryId).then(data => setPosts(data))
         } else if (searchTitle !== "") {
             searchPostTitles(searchTitle).then(data => setPosts(data) )
-            
+        } else if (selectedTagId !== "0") {
+            getPostByTag(selectedTagId).then(data => setPosts(data))
         } else {
             getPosts()
                 .then((data) => setPosts(data))
         }
-    }, [selectedCategoryId, searchTitle])
+    }, [selectedCategoryId, searchTitle, selectedTagId])
 
     useEffect(() => {
         if (Object.keys(filteredUser).length !== 0) {
@@ -52,6 +56,7 @@ export const PostsList = () => {
 
     return (
         <>
+            
             {searchTitle != "" ? <div className="category--filter">
                 <h3>Filter by Category:</h3>
                 <select className="select--category" defaultValue={0} disabled onChange={e => { setSelectedCategoryId(e.target.value) }}>
@@ -60,7 +65,8 @@ export const PostsList = () => {
                         return <option key={`category--${category.Id}`} value={category.id}>{category.label}</option>
                     })}
                 </select>
-            </div> : <div className="category--filter">
+            </div>  
+            : <div className="category--filter">
                 <h3>Filter by Category:</h3>
                 <select className="select--category" defaultValue={0} onChange={e => { setSelectedCategoryId(e.target.value) }}>
                     <option key={`category--0`} value={"0"}>All Categories</option>
@@ -86,6 +92,19 @@ export const PostsList = () => {
                 }} />
             </div>
             }
+
+            <div className="tag--filter">
+            <h3>Filter by Tag:</h3>
+                <select className="select--tag" defaultValue={0} onChange={e => { setSelectedTagId(e.target.value) }}>
+                    <option key={`tag--0`} value={"0"}>All Tags</option>
+                    {tags.map(tag => {
+                        return <option key={`tag--${tag.Id}`} value={tag.id}>{tag.label}</option>
+                    })}
+                </select>
+
+            </div>
+
+            
 
             <div className="search">
                 <label>Search By Author</label>

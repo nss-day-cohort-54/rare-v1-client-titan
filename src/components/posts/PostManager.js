@@ -52,3 +52,8 @@ export const searchPostTitles = (searchTerm) => {
     .then(res => res.json())
 }
 
+export const getPostByTag = (tagId) => {
+    return fetch(`${Settings.remoteURL}/posts?tags=${tagId}`)
+    .then(res => res.json())
+}
+
